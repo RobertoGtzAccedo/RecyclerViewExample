@@ -11,14 +11,14 @@ import com.example.robertogutierrez.recyclerview.Models.Category
 import com.example.robertogutierrez.recyclerview.R
 import kotlinx.android.synthetic.main.category_list_item.*
 
-class CategoryReciclerAdapter(val context: Context, val categories: List<Category>): RecyclerView.Adapter<CategoryReciclerAdapter.Holder>() {
+class CategoryReciclerAdapter(val context: Context, val categories: List<Category>, val itemClick: (Category) -> Unit): RecyclerView.Adapter<CategoryReciclerAdapter.Holder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.category_list_item, parent, false)
 
-        return Holder(view)
+        return Holder(view, itemClick)
 
     }
 
@@ -32,7 +32,7 @@ class CategoryReciclerAdapter(val context: Context, val categories: List<Categor
 
     }
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View, val itemClick: (Category) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         val categoryImage = itemView?.findViewById<ImageView>(R.id.categoryImage)
         val categoryName = itemView?.findViewById<TextView>(R.id.categoryName)
@@ -41,6 +41,7 @@ class CategoryReciclerAdapter(val context: Context, val categories: List<Categor
             val resourceId = context.resources.getIdentifier(category.image, "drawable", context.packageName)
             categoryImage?.setImageResource(resourceId)
             categoryName.text = category.title
+            itemView.setOnClickListener { itemClick(category) }
         }
 
 
